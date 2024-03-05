@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+
+{% block content %}
+  <div class="Home">
+    <h2>Register a New Account</h2>
+    <div class="registration">
+      <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        <p><label>{{form.username.label}}</label>
+        {{form.username}}</p>
+        <p><label>{{form.password1.label}}</label>
+        {{form.password1}}</p>
+        <p><label>{{form.password2.label}}</label>
+        {{form.password2}}</p>
+        
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

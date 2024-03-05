@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="Home">
+    <form method="POST" action="">
+        {% csrf_token %}
+        <p><label>{{form.topic.label}}</label>
+        {{form.name}}
+        <input type="submit" value="Submit"></p>
+    </form>
+    <h1>List of topics</h1>
+    <div class="registration">
+        {% for topic in topics %}
+            <div>
+                <h3></a>{{ topic.name }}<a href="{% url 'delete_topic' topic.id %}">&#10008;</h3>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'main.html' %}
+
+{% block content%}
+<div class="Home">
+    <h1>Lead</h1>
+        <div class="registration">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <p><label>{{form.topic.label}}</label>
+                {{form.topic}}
+                    <a href="{% url 'topic' %}">Add/Remove Topic</a></p>
+                <p><label>{{form.name.label}}</label>
+                {{form.name}}</p>
+                <p><label>{{form.email.label}}</label>
+                {{form.email}}</p>
+                <p><label>{{form.phone.label}}</label>
+                {{form.phone}}</p>
+                <p><label>{{form.description.label}}</label>
+                {{form.description}}</p>
+                <button type="submit" name="submit" value="Submit">Submit</button>
+            </form><hr>
+            <div class="CSV"><h1>Populate List from CSV file</h1></div>
+            <div class="CSV"><p>Rows in CSV files must have following names: Topic,Name,Email,Phone,Description
+                <br><br>!!! ROWS Name and Topic ARE REQUIRED !!!
+            </p></div>
+            <div class="CSV"><form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form1 }}
+                <button type="submit" name="Upload CSV" value="Upload CSV">Upload CSV</button>
+            </form></div>
+        </div>
+    
+        
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <div class="Home">
+        
+            <div>
+                {{project.body|safe}}
+            </div>
+        
+        {% if user.is_authenticated and user.is_superuser %}
+            <form method="POST" action="">
+                <div class="superuser_edit">
+                    {% csrf_token %}
+                    <p><label>{{form.body.label}}</label>
+                        {{form.body}}
+                    <input type="submit" value="Submit"></p>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

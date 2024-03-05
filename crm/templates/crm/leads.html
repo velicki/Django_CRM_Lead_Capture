@@ -1,0 +1,62 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="Home">
+    <div>
+        <div class="Btn_D">
+            <a href="{% url 'add_lead' %}">
+                <div class="Btn_DL">Add New Lead</div>
+            </a>
+        </div>
+        <div class="Btn_D">
+            <a href="{% url 'download_csv' %}?{{ request.GET.urlencode }}">
+                <div class="Btn_DL">Download this list as CSV file</div>
+            </a>
+        </div>
+        
+    </div>
+    <div class="lead_table_div">
+        <table class="lead_table">
+            <thead>
+                <tr>
+                    <th>Topic</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Data</th>
+                    <th>Description</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for lead in leads %}
+                    <tr>
+                        <td>{{ lead.topic.name }}</td>
+                        <td>{{ lead.name }}</td>
+                        <td>{{ lead.email }}</td>
+                        <td>{{ lead.phone }}</td>
+                        <td>
+                            Created: {{ lead.created }}
+                            {% if lead.created != lead.update %}
+                                <br>Updated: {{ lead.update }}
+                            {% endif %}
+                        </td>
+                        <td> {{ lead.description }} &nbsp;</td>
+                        
+                        <td><a href="{% url 'edit' lead.id %}">&#9998;</a></td>
+                        <td><a href="{% url 'delete' lead.id %}">&#10008;</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    
+    
+    
+    
+    
+</div>
+{% endblock %}
