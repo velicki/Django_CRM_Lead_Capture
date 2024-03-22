@@ -1,20 +1,34 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<div class="Home">
+<div>
     <form method="POST" action="">
         {% csrf_token %}
-        <p><label>{{form.topic.label}}</label>
+        <p><label>Add Topic</label>
         {{form.name}}
-        <input type="submit" value="Submit"></p>
+        <input class="btn btn-secondary" type="submit" value="Submit"></p>
     </form>
     <h1>List of topics</h1>
-    <div class="registration">
-        {% for topic in topics %}
-            <div>
-                <h3></a>{{ topic.name }}<a href="{% url 'delete_topic' topic.id %}">&#10008;</h3>
-            </div>
-        {% endfor %}
+    <hr>
+    <div class="row justify-content-center">
+        <div class="col-sm-6">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Topic</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for topic in topics %}
+                        <tr>
+                            <td>{{ topic.name }}</td>
+                            <td><a href="{% url 'delete_topic' topic.id %}"><i class="bi bi-x-square-fill"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

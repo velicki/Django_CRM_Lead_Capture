@@ -1,0 +1,20 @@
+{% extends 'crm/superuser.html' %}
+
+{% block content1 %}
+    <div class="row bg-danger rounded-top-3">
+        <div class="col">
+            <i class="bi bi-credit-card-2-front-fill"></i> Edit Home Page
+        </div>
+    </div>
+    <div class="row border border-danger">
+        <div class="col text-start">
+            <form method="POST" action="">
+                
+                {% csrf_token %}
+                <br>{{form.body}}<br>
+                <input type="submit" value="Submit">
+                
+            </form><br>
+        </div>
+    </div>
+{% endblock %}

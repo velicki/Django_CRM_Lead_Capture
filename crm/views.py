@@ -1,26 +1,21 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
 from django.shortcuts import render ,redirect
 from django.db.models import Q
+from django.db.models import Count
 from .models import Topic, About, Lead
 from .forms import LeadForm, TopicForm, AboutForm, CSVUploadForm
 import csv
 from django.http import HttpResponse
 
+def superuser_required(user):
+    return user.is_authenticated and user.is_superuser
+
 def home(request):
     project = About.objects.get(id=1)
-    form = AboutForm(instance=project)
-
-    if request.method == 'POST':
-        form = AboutForm(request.POST, instance=project)
-        if form.is_valid():
-            project.save()
-            return redirect('home')
-
-
-
-    context = {'project':project, 'form':form}
+    context = {'project':project}
     return render(request, 'crm/home.html', context)
 
 def login_view(request):
@@ -56,7 +51,6 @@ def register_view(request):
 def leads_view(request):
     sq = request.GET.get('sq') if request.GET.get('sq') != None else ''
     leads = Lead.objects.filter(user=request.user)
-    topics = Topic.objects.filter(user=request.user)
 
     if sq !='':
         leads = leads.filter(
@@ -67,7 +61,7 @@ def leads_view(request):
             Q(description__icontains=sq))
         
 
-    context = {'leads':leads, 'topics':topics}
+    context = {'leads':leads, }
     return render(request, 'crm/leads.html', context)
 
 
@@ -195,3 +189,63 @@ def download_csv(request):
         csv_writer.writerow([lead.topic.name, lead.name, lead.email, lead.phone, lead.description])
 
     return response
+
+@user_passes_test(superuser_required)
+def superuser_admin(request):
+    project = About.objects.get(id=1)
+    form = AboutForm(instance=project)
+
+    if request.method == 'POST':
+        form = AboutForm(request.POST, instance=project)
+        if form.is_valid():
+            project.save()
+            return redirect('home')
+
+    context = {'project':project, 'form':form}
+    return render(request, 'crm/superuser_home.html', context)
+
+@user_passes_test(superuser_required)
+def superuser_users(request):
+    users = User.objects.count()
+    topics = Topic.objects.count()
+    leads = Lead.objects.count()
+    user_topics_counts = User.objects.annotate(num_topics=Count('topic', distinct=True), num_leads=Count('lead', distinct=True))
+
+    context = {'users':users, 'topics':topics, 'leads':leads, 'user_topics_counts':user_topics_counts}
+    return render(request, 'crm/superuser_users.html', context)
+
+@user_passes_test(superuser_required)
+def delete_user(request, pk):
+    users = User.objects.get(id=pk)
+    if request.method == 'POST':
+        users.delete()
+        return redirect('superuser_users')
+    return render(request, 'crm/delete.html', {'obj':users})
+
+@user_passes_test(superuser_required)
+def superuser_topic(request, pk):
+    users = User.objects.get(id=pk)
+    topics = Topic.objects.filter(user=users.id)
+
+    if request.method == 'POST':
+        is_superuser = request.POST.get('is_superuser')
+        users.is_superuser = is_superuser == 'on'
+        users.save()
+        return redirect('superuser_topic', pk=users.id)
+
+    context = {'users':users, 'topics':topics}
+    return render(request, 'crm/superuser_topics.html', context)
+
+@user_passes_test(superuser_required)
+def superuser_leads(request, pk):
+    users = User.objects.get(id=pk)
+    leads = Lead.objects.filter(user=users.id)
+
+    if request.method == 'POST':
+        is_superuser = request.POST.get('is_superuser')
+        users.is_superuser = is_superuser == 'on'
+        users.save()
+        return redirect('superuser_leads', pk=users.id)
+
+    context = {'users':users, 'leads':leads}
+    return render(request, 'crm/superuser_leads.html', context)

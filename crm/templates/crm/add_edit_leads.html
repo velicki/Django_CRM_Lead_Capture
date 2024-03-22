@@ -1,32 +1,89 @@
 {% extends 'main.html' %}
 
 {% block content%}
-<div class="Home">
+<div>
     <h1>Lead</h1>
-        <div class="registration">
-            <form method="POST" action="">
-                {% csrf_token %}
-                <p><label>{{form.topic.label}}</label>
-                {{form.topic}}
-                    <a href="{% url 'topic' %}">Add/Remove Topic</a></p>
-                <p><label>{{form.name.label}}</label>
-                {{form.name}}</p>
-                <p><label>{{form.email.label}}</label>
-                {{form.email}}</p>
-                <p><label>{{form.phone.label}}</label>
-                {{form.phone}}</p>
-                <p><label>{{form.description.label}}</label>
-                {{form.description}}</p>
-                <button type="submit" name="submit" value="Submit">Submit</button>
-            </form><hr>
-            <div class="CSV"><h1>Populate List from CSV file</h1></div>
-            <div class="CSV"><p>Rows in CSV files must have following names: Topic,Name,Email,Phone,Description
+        <div class="container">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-auto">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col text-start">
+                                <label for="exampleFormControlInput1" class="form-label">{{form.topic.label}}</label>
+                            </div>
+                            
+                        </div>
+                        <div class="row mb-3"> 
+                            <div class="col-4 text-start">
+                                {{form.topic}}
+                            </div> 
+                            <div class="col-auto text-end">
+                                <a class="btn btn-secondary" href="{% url 'topic' %}">Add/Remove Topic</a>
+                            </div>      
+                        </div>
+                        <div class="row">
+                            <div class="col-6 text-start">
+                                <label>{{form.name.label}}</label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col text-start">
+                                {{form.name}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 text-start">
+                                <label>{{form.email.label}}</label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col text-start">
+                                {{form.email}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 text-start">
+                                <label>{{form.phone.label}}</label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col text-start">
+                                {{form.phone}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 text-start">
+                                <label>{{form.description.label}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-start">
+                                {{form.description}}
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" type="submit" name="submit" value="Submit">Submit</button>
+                    </form>
+                </div>
+                <div class="col"></div>
+            </div>
+            <hr>
+            <div><h1>Populate List from CSV file</h1></div>
+            <div><p>Rows in CSV files must have following names: Topic,Name,Email,Phone,Description
                 <br><br>!!! ROWS Name and Topic ARE REQUIRED !!!
             </p></div>
-            <div class="CSV"><form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form1 }}
-                <button type="submit" name="Upload CSV" value="Upload CSV">Upload CSV</button>
+            <div><form method="POST" enctype="multipart/form-data">
+                <div class="container">
+                    {% csrf_token %}
+                    <div class="row justify-content-center mb-3">
+                        <div class="col-sm-12">
+                            {{ form1 }}
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-secondary mb-6" type="submit" name="Upload CSV" value="Upload CSV">Upload CSV</button>
             </form></div>
         </div>
     

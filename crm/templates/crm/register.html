@@ -1,20 +1,46 @@
 {% extends 'main.html' %}
 
 {% block content %}
-  <div class="Home">
+  <div class="row justify-content-center">
     <h2>Register a New Account</h2>
-    <div class="registration">
+    
       <form method="post" action="{% url 'register' %}">
         {% csrf_token %}
-        <p><label>{{form.username.label}}</label>
-        {{form.username}}</p>
-        <p><label>{{form.password1.label}}</label>
-        {{form.password1}}</p>
-        <p><label>{{form.password2.label}}</label>
-        {{form.password2}}</p>
+        <div class="row justify-content-center">
+          <div class="col-sm-6 text-start">
+            <label>{{form.username.label}}</label>
+          </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+          <div class="col-sm-6 text-start">
+            {{form.username}}
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-sm-6 text-start">
+            <label>{{form.password1.label}}</label>
+          </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+          <div class="col-sm-6 text-start">
+            {{form.password1}}
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-sm-6 text-start">
+            <label>{{form.password2.label}}</label>
+          </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+          <div class="col-sm-6 text-start">
+            {{form.password2}}
+          </div>
+        </div>
         
-        <button type="submit">Register</button>
+        <button class="btn btn-secondary" type="submit">Register</button>
       </form>
-    </div>
+    
   </div>
 {% endblock %}

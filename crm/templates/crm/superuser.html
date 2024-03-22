@@ -1,0 +1,34 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <div class="row justify-content-evenly">
+        <div class="col-md-3 col-lg-2 mb-3">
+            <div class="row">
+                <div class="row bg-danger rounded-top-3">
+                    <div class="col">
+                        <i class="bi bi-gear-fill"></i> Dashboard
+                    </div>
+                </div>
+                <div class="row border border-danger">
+                    <a class="btn" href="{% url 'superuser' %}"><div class="col text-start">
+                        <i class="bi bi-house-gear-fill"></i> Home
+                    </div></a>
+                </div>
+                <div class="row border border-danger">
+                    <a class="btn" href="{% url 'superuser_users' %}"><div class="col text-start">
+                        <i class="bi bi-person-lines-fill"></i> Users
+                    </div></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-lg-9">
+            <div class="row">
+                {% block content1 %}
+
+                {% endblock %}
+                
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
