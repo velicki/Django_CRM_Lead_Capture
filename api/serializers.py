@@ -1,26 +1,27 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from crm.models import Lead, Topic
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username']
+from crm.models import Lead, Topic, About
 
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
-        fields = ['name']
+        fields = ['id', 'user', 'name']
+        read_only_fields = ['id', 'user']
 
-class LeadSerializers(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    topic = TopicSerializer(read_only=True)
+class AboutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = About
+        fields = ['body']
+
+class LeadSerializer(serializers.ModelSerializer):
+    topic_name = serializers.CharField(source='topic.name', read_only=True)
 
     class Meta:
         model = Lead
-        fields = ['id', 'user', 'name', 'topic', 'email', 'phone', 'description']
+        fields = ['id', 'user', 'topic', 'topic_name', 'name', 'email', 'phone', 'description']
+        read_only_fields = ['id', 'user', 'topic_name']
 
-    def create(self, validated_data):
-        # Exclude user from validated_data, as it should not be created
-        validated_data.pop('user','topic', None)
-        return super().create(validated_data)
+    def validate_topic(self, value):
+        user = self.context['request'].user
+        if not user.topic_set.filter(pk=value.pk).exists():
+            raise serializers.ValidationError("You can only select topics that you have.")
+        return value
